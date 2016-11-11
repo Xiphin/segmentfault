@@ -226,7 +226,7 @@ func hurdleOne(urlStr string) {
 	}
 	re := regexp.MustCompile(`<a style="color: #172024" href="\?k=(.+?)">`)
 	find := re.FindStringSubmatch(segmentfaultHTML)
-	fmt.Println("[=>]通往第2关的密码：", find[1])
+	fmt.Println("[=>]通往第 2 关的密码：", find[1])
 	nextURL := "https://1111.segmentfault.com/?k=" + find[1]
 	hurdleTwo(nextURL)
 }
@@ -238,25 +238,25 @@ func hurdleTwo(urlStr string) {
 	}
 	re := regexp.MustCompile(`<!-- 不错嘛,密码在此:(.+?) -->`)
 	find := re.FindStringSubmatch(segmentfaultHTML)
-	fmt.Println("[=>]通往第3关的密码：", find[1])
+	fmt.Println("[=>]通往第 3 关的密码：", find[1])
 	nextURL := "https://1111.segmentfault.com/?k=" + find[1]
 	hurdleThree(nextURL)
 }
 
 func hurdleThree(urlStr string) {
-	splitStr := strings.Split(urlStr, "/?k=")
+	splitStr := strings.Split(urlStr, "?k=")
 
 	k, err := getResponseHeaderK(splitStr[0], map[string]interface{}{"k": splitStr[1]})
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println("[=>]通往第4关的密码：", k)
+	fmt.Println("[=>]通往第 4 关的密码：", k)
 	nextURL := "https://1111.segmentfault.com/?k=" + k
 	hurdleFour(nextURL)
 }
 
 func hurdleFour(urlStr string) {
-	splitStr := strings.Split(urlStr, "/?k=")
+	splitStr := strings.Split(urlStr, "?k=")
 	k := splitStr[1]
 	h := md5.New()
 	io.WriteString(h, "4")
@@ -265,13 +265,13 @@ func hurdleFour(urlStr string) {
 		io.WriteString(h, "5")
 		k = hex.EncodeToString(h.Sum(nil))
 	}
-	fmt.Println("[=>]通往第5关的密码：", k)
+	fmt.Println("[=>]通往第 5 关的密码：", k)
 	nextURL := "https://1111.segmentfault.com/?k=" + k
 	hurdleFive(nextURL)
 }
 
 func hurdleFive(urlStr string) {
-	splitStr := strings.Split(urlStr, "/?k=")
+	splitStr := strings.Split(urlStr, "?k=")
 	segmentfaultHTML, err := get(urlStr)
 	if err != nil {
 		fmt.Println(err)
@@ -284,7 +284,7 @@ func hurdleFive(urlStr string) {
 	}
 	re = regexp.MustCompile(`\/KEY:(.+?)\/`)
 	find = re.FindStringSubmatch(imgData)
-	fmt.Println("[=>]通往第6关的密码：", find[1])
+	fmt.Println("[=>]通往第 6 关的密码：", find[1])
 	nextURL := "https://1111.segmentfault.com/?k=" + find[1]
 	hurdleSix(nextURL)
 }
@@ -299,7 +299,7 @@ func hurdleSix(urlStr string) {
 	segmentfaultHTML, err = get("https://www.baidu.com/s?wd=" + find[1] + "&ie=UTF-8")
 	re = regexp.MustCompile(`key: (.*?)腾讯微博,与其在别处仰望 不...`)
 	find = re.FindStringSubmatch(segmentfaultHTML)
-	fmt.Println("[=>]通往第7关的密码：", find[1])
+	fmt.Println("[=>]通往第 7 关的密码：", find[1])
 	nextURL := "https://1111.segmentfault.com/?k=" + find[1]
 	hurdleSeven(nextURL)
 }
@@ -311,7 +311,7 @@ func hurdleSeven(urlStr string) {
 	}
 	re := regexp.MustCompile(`<code>(.+?)</code>`)
 	find := re.FindStringSubmatch(segmentfaultHTML)
-	fmt.Println("[=>]通往第8关的密码：", find[1])
+	fmt.Println("[=>]通往第 8 关的密码：", find[1])
 	nextURL := "https://1111.segmentfault.com/?k=" + find[1]
 	hurdleEight(nextURL)
 }
@@ -323,7 +323,7 @@ func hurdleEight(urlStr string) {
 	}
 	re := regexp.MustCompile(`<input type="text" name="k" value="(.+?)" />`)
 	find := re.FindStringSubmatch(segmentfaultHTML)
-	fmt.Println("[=>]通往第9关的密码：", find[1])
+	fmt.Println("[=>]通往第 9 关的密码：", find[1])
 	nextURL := "https://1111.segmentfault.com/?k=" + find[1]
 	hurdleNine(nextURL)
 }
@@ -346,7 +346,7 @@ func hurdleNine(urlStr string) {
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		fmt.Println("通往第10关的文件已生成，请自行解压通关！")
+		fmt.Println("[=>]通往第 10 关的文件已生成，请自行解压通关！")
 	}
 }
 
