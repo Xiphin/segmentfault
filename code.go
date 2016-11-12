@@ -146,23 +146,30 @@ func get(urlStr string) (string, error) {
 	return string(bodyByte), nil
 }
 
-func post(urlStr string, params map[string]interface{}) (string, error) {
+func post(urlStr string, params map[string]string, headers map[string]string) (string, error) {
 	var err error
 	var resp *http.Response
 	client := &http.Client{}
 
 	v := url.Values{}
-	for key, value := range params {
-		v.Add(key, value.(string))
+	for key, val := range params {
+		v.Add(key, val)
 	}
 	req, err := http.NewRequest("POST", urlStr, strings.NewReader(v.Encode()))
 	if err != nil {
 		fmt.Println(err)
 		return "", err
 	}
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
-	req.Header.Add("Referer", "https://1111.segmentfault.com")
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Add("User-agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36")
+	if headers != nil {
+		for key, val := range headers {
+			req.Header.Add(key, val)
+		}
+	} else {
+		req.Header.Add("Referer", "https://1111.segmentfault.com")
+	}
+
 	resp, err = client.Do(req)
 
 	if err != nil || resp == nil {
@@ -179,21 +186,21 @@ func post(urlStr string, params map[string]interface{}) (string, error) {
 	return string(bodyByte), nil
 }
 
-func getResponseHeaderK(urlStr string, params map[string]interface{}) (string, error) {
+func getResponseHeaderK(urlStr string, params map[string]string, headers map[string]string) (string, error) {
 	var err error
 	var resp *http.Response
 	client := &http.Client{}
 
 	v := url.Values{}
-	for key, value := range params {
-		v.Add(key, value.(string))
+	for key, val := range params {
+		v.Add(key, val)
 	}
 	req, err := http.NewRequest("POST", urlStr, strings.NewReader(v.Encode()))
 	if err != nil {
 		fmt.Println(err)
 		return "", err
 	}
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Add("Referer", "https://1111.segmentfault.com")
 	req.Header.Add("User-agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36")
 	resp, err = client.Do(req)
@@ -246,7 +253,7 @@ func hurdleTwo(urlStr string) {
 func hurdleThree(urlStr string) {
 	splitStr := strings.Split(urlStr, "?k=")
 
-	k, err := getResponseHeaderK(splitStr[0], map[string]interface{}{"k": splitStr[1]})
+	k, err := getResponseHeaderK(splitStr[0], map[string]string{"k": splitStr[1]}, map[string]string{})
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -323,50 +330,62 @@ func hurdleEight(urlStr string) {
 	}
 	re := regexp.MustCompile(`<input type="text" name="k" value="(.+?)" />`)
 	find := re.FindStringSubmatch(segmentfaultHTML)
-	fmt.Println("[=>]通往第 9 关的密码：", find[1])
-	nextURL := "https://1111.segmentfault.com/?k=" + find[1]
+
+	nextURL := urlStr + "$post_k=" + find[1]
+	fmt.Print("[=>]通往第 9 关的密码：" + find[1] + "\n\n[**]注意：第 9 关不能直接通过密码访问，需要制下面链接才能访问通关:\n[=>]" + nextURL + "\n\n")
+
 	hurdleNine(nextURL)
 }
 
 func hurdleNine(urlStr string) {
-	splitStr := strings.Split(urlStr, "/?k=")
-	segmentfaultHTML, err := post(splitStr[0], map[string]interface{}{"k": splitStr[1]})
-	if err != nil {
-		fmt.Println(err)
-	}
+	if strings.Contains(urlStr, "$post_k=") {
+		splitStr := strings.Split(urlStr, "$post_k=")
+		segmentfaultHTML, err := post(splitStr[0], map[string]string{"k": splitStr[1]}, map[string]string{"Referer": splitStr[0]})
+		if err != nil {
+			fmt.Println(err)
+		}
 
-	re := regexp.MustCompile(`<pre>([\s\S]+?)</pre>`)
-	find := re.FindStringSubmatch(segmentfaultHTML)
-	binaryData := strings.Replace(find[1], "____", "1111", -1)
-	fileData, err := base64.StdEncoding.DecodeString(string(BinaryStringToBytes(binaryData)))
-	if err != nil {
-		fmt.Println(err)
-	}
-	err = ioutil.WriteFile("./segmentfault.tar.gz", fileData, 0666)
-	if err != nil {
-		fmt.Println(err)
+		re := regexp.MustCompile(`<pre>([\s\S]+?)</pre>`)
+		find := re.FindStringSubmatch(segmentfaultHTML)
+		binaryData := strings.Replace(find[1], "____", "1111", -1)
+		fileData, err := base64.StdEncoding.DecodeString(string(BinaryStringToBytes(binaryData)))
+		if err != nil {
+			fmt.Println(err)
+		}
+		err = ioutil.WriteFile("./segmentfault.tar.gz", fileData, 0666)
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			fmt.Println("[=>]通往第 10 关的文件已生成，请自行解压通关！")
+			fmt.Print("\n[**]你也可以复制下面链接直接通行第 10 关：\nhttps://1111.segmentfault.com/?k=e4a4a96a69a1b2b530b3bec6734cdf52\n")
+		}
 	} else {
-		fmt.Println("[=>]通往第 10 关的文件已生成，请自行解压通关！")
+		fmt.Println("第 9 关不能直接访问，选从第 8 关开始获取通往第 9 关的链接")
 	}
 }
 
 func main() {
-	segmentfaultURL := flag.String("sf", "https://1111.segmentfault.com/?k=1573402aa6086d9ce42cfd5991027022", "Use -sf <segmentfault 1111 romote url>")
+	segmentfaultURL := flag.String("sf", "https://1111.segmentfault.com/?k=1573402aa6086d9ce42cfd5991027022", "Use -sf <SegmentFault 1111 URL>")
 	flag.Parse()
-	fmt.Printf("segmentfault url: %s\n", *segmentfaultURL)
-
-	segmentfaultHTML, err := get(*segmentfaultURL)
-	if err != nil {
-		fmt.Println(err)
-	}
-	re := regexp.MustCompile(`<title>[\S]+?(\d|,\s)+[\S]+</title>`)
-	find := re.FindStringSubmatch(segmentfaultHTML)
-	if find[1] != "" && strings.Contains(find[1], ",") != true {
-		fmt.Println("[=>]你从第", find[1], "关开始的 =>")
-		hurdle[find[1]](*segmentfaultURL)
-	} else if *segmentfaultURL == "https://1111.segmentfault.com/?k=e4a4a96a69a1b2b530b3bec6734cdf52" {
-		fmt.Println("恭喜, 你已经通过了所有关卡！")
+	fmt.Printf("\nSegmentFault 1111 URL: %s\n", *segmentfaultURL)
+	if strings.Contains(*segmentfaultURL, "$post_k=") {
+		fmt.Println("\n[=>]你从第 9 关开始的 =>")
+		hurdle["9"](*segmentfaultURL)
 	} else {
-		fmt.Println("对不起, 你提供的链接不能识别，请核对后再试！")
+		segmentfaultHTML, err := get(*segmentfaultURL)
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(segmentfaultURL)
+		re := regexp.MustCompile(`<title>[\S]+?(\d|,\s)+[\S]+</title>`)
+		find := re.FindStringSubmatch(segmentfaultHTML)
+		if find != nil && find[1] != "" && strings.Contains(find[1], ",") != true {
+			fmt.Println("\n[=>]你从第", find[1], "关开始的 =>")
+			hurdle[find[1]](*segmentfaultURL)
+		} else if *segmentfaultURL == "https://1111.segmentfault.com/?k=e4a4a96a69a1b2b530b3bec6734cdf52" {
+			fmt.Println("\n恭喜, 你已经通过了所有关卡！")
+		} else {
+			fmt.Println("\n对不起, 你提供的链接不能识别，请核对后再试！")
+		}
 	}
 }
