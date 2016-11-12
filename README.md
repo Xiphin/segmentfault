@@ -44,7 +44,7 @@ https://1111.segmentfault.com/?k=d1a571d7ba84dcf2d146fb5b666efcb9$post_k=fb7d717
 
 [=>]通往第 10 关的文件已生成，请自行解压通关！
 
-[**]你也可以复制下面链接直接通行第 10 关：
+[**]你也可以复制下面链接直接通往第 10 关：
 
 https://1111.segmentfault.com/?k=e4a4a96a69a1b2b530b3bec6734cdf52
 ```
