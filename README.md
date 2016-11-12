@@ -1,26 +1,30 @@
-#SegmentFault光棍节(双11)程序员闯关秀通关工具
+# SegmentFault光棍节(双11)程序员闯关秀通关工具
+------
+**编译环境：**
+> golang && (windows|linux)
 
-编译环境：
-golang > 1.4.3
+**使用方法(2种)：**
 
-使用方法(2种)：
+*获取代码:*
+> go get github.com/Xiphin/segmentfault
 
-go get github.com/Xiphin/segmentfault
-
-1.编译成可执行程序
-a.进入 github.com/Xiphin/segmentfault 目录后 go build
-b.运行 segmentfault -sf 闯关链接，形如：
-  segmentfault -sf https://1111.segmentfault.com
-  segmentfault -sf https://1111.segmentfault.com?k=1573402aa6086d9ce42cfd5991027022
-  segmentfault -sf https://1111.segmentfault.com/?k=1573402aa6086d9ce42cfd5991027022
+ 1. 编译成可执行程序
+> * 进入 github.com/Xiphin/segmentfault 目录后 go build
+> * 运行 segmentfault -sf 闯关链接，形如：
+```
+> segmentfault -sf https://1111.segmentfault.com
+> segmentfault -sf https://1111.segmentfault.com?k=1573402aa6086d9ce42cfd5991027022
+> segmentfault -sf https://1111.segmentfault.com/?k=1573402aa6086d9ce42cfd5991027022
+```
   
-2.直接 go run code.go
-a.进入 github.com/Xiphin/segmentfault 目录后 go run code.go -sf 闯关链接，形如：
-  go run code.go -sf https://1111.segmentfault.com
-  go run code.go -sf https://1111.segmentfault.com?k=1573402aa6086d9ce42cfd5991027022
-  go run code.go -sf https://1111.segmentfault.com/?k=1573402aa6086d9ce42cfd5991027022
-  
-运行结果类似如下：
+ 2. 直接 go run code.go
+> * 进入 github.com/Xiphin/segmentfault 目录后 go run code.go -sf 闯关链接，形如：
+```
+> go run code.go -sf https://1111.segmentfault.com
+> go run code.go -sf https://1111.segmentfault.com?k=1573402aa6086d9ce42cfd5991027022
+> go run code.go -sf https://1111.segmentfault.com/?k=1573402aa6086d9ce42cfd5991027022
+```
+**运行结果类似如下：**
 ```
 SegmentFault 1111 URL: https://1111.segmentfault.com
 
