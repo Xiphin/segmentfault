@@ -9,8 +9,8 @@
 > go get github.com/Xiphin/segmentfault
 
  1. 编译成可执行程序
-> * 进入 github.com/Xiphin/segmentfault 目录后 go build
-> * 运行 segmentfault -sf 闯关链接，形如：
+=> *进入 github.com/Xiphin/segmentfault 目录后 go build
+=> *运行 segmentfault -sf 闯关链接，形如：
 ```
 > segmentfault -sf https://1111.segmentfault.com
 > segmentfault -sf https://1111.segmentfault.com?k=1573402aa6086d9ce42cfd5991027022
@@ -18,7 +18,7 @@
 ```
   
  2. 直接 go run code.go
-> * 进入 github.com/Xiphin/segmentfault 目录后 go run code.go -sf 闯关链接，形如：
+=> *进入 github.com/Xiphin/segmentfault 目录后 go run code.go -sf 闯关链接，形如：
 ```
 > go run code.go -sf https://1111.segmentfault.com
 > go run code.go -sf https://1111.segmentfault.com?k=1573402aa6086d9ce42cfd5991027022
