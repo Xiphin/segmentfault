@@ -358,7 +358,7 @@ func hurdleNine(urlStr string) {
 			fmt.Println(err)
 		} else {
 			fmt.Println("[=>]通往第 10 关的文件已生成，请自行解压通关！")
-			fmt.Print("\n[**]你也可以复制下面链接直接通行第 10 关：\n\nhttps://1111.segmentfault.com/?k=e4a4a96a69a1b2b530b3bec6734cdf52\n")
+			fmt.Print("\n[**]你也可以复制下面链接直接通往第 10 关：\n\nhttps://1111.segmentfault.com/?k=e4a4a96a69a1b2b530b3bec6734cdf52\n")
 		}
 	} else {
 		fmt.Println("第 9 关不能直接访问，选从第 8 关开始获取通往第 9 关的链接")
