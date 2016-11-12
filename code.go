@@ -332,7 +332,8 @@ func hurdleEight(urlStr string) {
 	find := re.FindStringSubmatch(segmentfaultHTML)
 
 	nextURL := urlStr + "$post_k=" + find[1]
-	fmt.Print("[=>]通往第 9 关的密码：" + find[1] + "\n\n[**]注意：第 9 关不能直接通过密码访问，需要制下面链接才能访问通关:\n[=>]" + nextURL + "\n\n")
+	fmt.Println("[=>]通往第 9 关的密码：", find[1])
+	fmt.Print("\n[**]注意：第 9 关不能直接通过密码访问，需要制下面链接才能访问通关:\n\n" + nextURL + "\n\n")
 
 	hurdleNine(nextURL)
 }
@@ -357,7 +358,7 @@ func hurdleNine(urlStr string) {
 			fmt.Println(err)
 		} else {
 			fmt.Println("[=>]通往第 10 关的文件已生成，请自行解压通关！")
-			fmt.Print("\n[**]你也可以复制下面链接直接通行第 10 关：\nhttps://1111.segmentfault.com/?k=e4a4a96a69a1b2b530b3bec6734cdf52\n")
+			fmt.Print("\n[**]你也可以复制下面链接直接通行第 10 关：\n\nhttps://1111.segmentfault.com/?k=e4a4a96a69a1b2b530b3bec6734cdf52\n")
 		}
 	} else {
 		fmt.Println("第 9 关不能直接访问，选从第 8 关开始获取通往第 9 关的链接")
@@ -376,7 +377,7 @@ func main() {
 		if err != nil {
 			fmt.Println(err)
 		}
-		fmt.Println(segmentfaultURL)
+
 		re := regexp.MustCompile(`<title>[\S]+?(\d|,\s)+[\S]+</title>`)
 		find := re.FindStringSubmatch(segmentfaultHTML)
 		if find != nil && find[1] != "" && strings.Contains(find[1], ",") != true {
