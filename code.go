@@ -348,17 +348,23 @@ func hurdleNine(urlStr string) {
 
 		re := regexp.MustCompile(`<pre>([\s\S]+?)</pre>`)
 		find := re.FindStringSubmatch(segmentfaultHTML)
-		binaryData := strings.Replace(find[1], "____", "1111", -1)
-		fileData, err := base64.StdEncoding.DecodeString(string(BinaryStringToBytes(binaryData)))
-		if err != nil {
-			fmt.Println(err)
-		}
-		err = ioutil.WriteFile("./segmentfault.tar.gz", fileData, 0666)
-		if err != nil {
-			fmt.Println(err)
+		if find != nil && find[1] != "" && strings.Contains(find[1], ",") != true {
+			binaryData := strings.Replace(find[1], "____", "1111", -1)
+			fileData, err := base64.StdEncoding.DecodeString(string(BinaryStringToBytes(binaryData)))
+			if err != nil {
+				fmt.Println(err)
+			}
+			err = ioutil.WriteFile("./segmentfault.tar.gz", fileData, 0666)
+			if err != nil {
+				fmt.Println(err)
+			} else {
+				fmt.Println("[=>]通往第 10 关的文件已生成，请自行解压通关！")
+				fmt.Print("\n[**]你也可以复制下面链接直接通往第 10 关：\n\nhttps://1111.segmentfault.com/?k=e4a4a96a69a1b2b530b3bec6734cdf52\n")
+			}
+		} else if len(splitStr[1]) != 32 {
+			fmt.Println("\n对不起, 你提供的链接不能识别，请核对后再试！")
 		} else {
-			fmt.Println("[=>]通往第 10 关的文件已生成，请自行解压通关！")
-			fmt.Print("\n[**]你也可以复制下面链接直接通往第 10 关：\n\nhttps://1111.segmentfault.com/?k=e4a4a96a69a1b2b530b3bec6734cdf52\n")
+			fmt.Println("\n对不起, 未能识别的错误！")
 		}
 	} else {
 		fmt.Println("第 9 关不能直接访问，选从第 8 关开始获取通往第 9 关的链接")
